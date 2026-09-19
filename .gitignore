@@ -1,0 +1,9 @@
+**/target/
+.idea
+*.iml
+*.class
+*Test.java
+**/test/
+.env
+**/application_local.yaml
+**/application-local.yaml
