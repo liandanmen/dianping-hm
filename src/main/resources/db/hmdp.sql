@@ -1274,11 +1274,29 @@ CREATE TABLE `tb_voucher_order`  (
   `use_time` timestamp NULL DEFAULT NULL COMMENT '核销时间',
   `refund_time` timestamp NULL DEFAULT NULL COMMENT '退款时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_user_voucher` (`user_id`, `voucher_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tb_voucher_order
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for tb_seckill_order_message
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_seckill_order_message`;
+CREATE TABLE `tb_seckill_order_message` (
+  `order_id` bigint(20) NOT NULL COMMENT '订单id',
+  `user_id` bigint(20) UNSIGNED NOT NULL COMMENT '用户id',
+  `voucher_id` bigint(20) UNSIGNED NOT NULL COMMENT '优惠券id',
+  `status` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0初始化 1待发送 2发送中 3已发送 4已创建 5待重试 6已补偿 7已拒绝',
+  `retry_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '发送重试次数',
+  `last_error` varchar(500) NULL DEFAULT NULL COMMENT '最后一次错误',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`order_id`) USING BTREE,
+  KEY `idx_status_update_time` (`status`, `update_time`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;

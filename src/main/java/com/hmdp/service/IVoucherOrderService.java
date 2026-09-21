@@ -18,5 +18,7 @@ public interface IVoucherOrderService extends IService<VoucherOrder> {
 
     void voucherOrder(VoucherOrder voucherId);
 
+    void markOrderCreated(VoucherOrder voucherOrder);
+
     void compensateRedisStock(VoucherOrder voucherOrder);
 }

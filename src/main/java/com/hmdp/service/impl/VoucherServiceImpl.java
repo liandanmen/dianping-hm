@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static com.hmdp.utils.RedisConstants.SECKILL_STOCK_KEY;
+import static com.hmdp.utils.RedisConstants.*;
 
 /**
  * <p>
@@ -56,6 +56,16 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         stringRedisTemplate.opsForValue().set(
                 SECKILL_STOCK_KEY+voucher.getId(),
                 voucher.getStock().toString());
+        stringRedisTemplate.opsForValue().set(
+                SECKILL_BEGIN_TIME_KEY + voucher.getId(),
+                String.valueOf(toEpochMilli(voucher.getBeginTime())));
+        stringRedisTemplate.opsForValue().set(
+                SECKILL_END_TIME_KEY + voucher.getId(),
+                String.valueOf(toEpochMilli(voucher.getEndTime())));
 
+    }
+
+    private long toEpochMilli(java.time.LocalDateTime time) {
+        return time.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 }
