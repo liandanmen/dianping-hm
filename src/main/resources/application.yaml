@@ -19,7 +19,8 @@ spring:
       simple:
         acknowledge-mode: manual
         prefetch: 10
-    publisher-confirm-type: correlated
+        default-requeue-rejected: false
+    publisher-confirm-type: correlated   #开启确认模式
     publisher-returns: true
     virtual-host: '/'
   redis:
